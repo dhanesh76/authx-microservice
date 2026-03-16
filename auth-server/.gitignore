@@ -37,3 +37,6 @@ application.yml
 
 # secrets
 *.pem
+
+.idea/
+*.log
