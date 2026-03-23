@@ -1,0 +1,52 @@
+package d76.app.auth.exception;
+
+
+import dev.d76.spring.exception.ErrorCode;
+import org.springframework.http.HttpStatus;
+
+public enum AuthErrorCode implements ErrorCode {
+
+    // authentication
+    INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED, "The provided credentials are invalid."),
+    ACCESS_DENIED(HttpStatus.FORBIDDEN, "You do not have permission to access this resource."),
+
+    // registration
+    ROLE_NOT_FOUND(HttpStatus.NOT_FOUND, "The specified role does not exist."),
+    USERNAME_TAKEN(HttpStatus.CONFLICT, "This username is already in use."),
+    EMAIL_ALREADY_REGISTERED(HttpStatus.CONFLICT, "An account already exists with this email address."),
+    REGISTER_SESSION_EXPIRED(HttpStatus.REQUEST_TIMEOUT, "Register session expired, try again"),
+
+    // oauth
+    EMAIL_REQUIRED(HttpStatus.BAD_REQUEST, "A valid email address is required."),
+
+    //oauth-registration
+    INVALID_AUTH_PROVIDER(HttpStatus.BAD_REQUEST, "Invalid Authentication Provider"),
+
+    // provider linking
+    AUTH_PROVIDER_NOT_LINKED(HttpStatus.CONFLICT,
+            "This email address is not linked to the selected authentication provider. " +
+                    "Please sign in using a linked method or link this provider in your account settings."),
+
+    //jwt
+    INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "Invalid Token");
+
+
+    private final HttpStatus status;
+    private final String defaultMessage;
+
+    AuthErrorCode(HttpStatus status, String defaultMessage) {
+        this.status = status;
+        this.defaultMessage = defaultMessage;
+    }
+
+
+    @Override
+    public int getHttpStatus() {
+        return status.value();
+    }
+
+    @Override
+    public String defaultMessage() {
+        return defaultMessage;
+    }
+}
